@@ -3,10 +3,19 @@
 	import { FastAverageColor } from 'fast-average-color';
 	import Color from 'color';
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
-	// TODO: we will fethc this randomly from API for now hardcoded
+	// /** @type {import('./$types').LayoutLoad} */
+	// export let data;
+	// console.log(data);
+
+	let loaded = false;
+
+	// TODO: we will fetch this randomly from API; for now hardcoded
 	const bg =
-		'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/uncentered/17/17014.jpg';
+		'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/uncentered/17/17027.jpg';
+	// const bg =
+	// 	'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/uncentered/99/99040.jpg';
 
 	// FIXME: this can probably use some refactoring
 	onMount(async () => {
@@ -18,14 +27,35 @@
 				var color: Color = new Color(result.rgb);
 
 				if (result.isDark) {
-					container.style.setProperty('--bg-dom-color', color.fade(0.2).whiten(0.3).rgb().string());
-					container.style.setProperty('--comp', color.fade(0.8).lightness(80).rgb().string());
-					container.style.setProperty('--text-color', '#fff');
+					const dom_color: Color = color.whiten(0.3);
+					const comp_color: Color = color.lightness(50);
+
+					// dominant color
+					container.style.setProperty('--bg-dom-r', dom_color.red().toString());
+					container.style.setProperty('--bg-dom-g', dom_color.green().toString());
+					container.style.setProperty('--bg-dom-b', dom_color.blue().toString());
+					// complementary colo
+					container.style.setProperty('--bg-comp-r', comp_color.red().toString());
+					container.style.setProperty('--bg-comp-g', comp_color.green().toString());
+					container.style.setProperty('--bg-comp-b', comp_color.blue().toString());
+					// text
+					container.style.setProperty('--text-color', color.lightness(90).rgb().string());
 				} else {
-					container.style.setProperty('--bg-dom-color', color.fade(0.2).blacken(0.3).rgb().string());
-					container.style.setProperty('--comp', color.fade(0.8).lightness(20).rgb().string());
-					container.style.setProperty('--text-color', '#000');
+					const dom_color: Color = color.fade(0.2).blacken(0.3);
+					const comp_color: Color = color.fade(0.7).lightness(50);
+
+					// dominant color
+					container.style.setProperty('--bg-dom-r', dom_color.red().toString());
+					container.style.setProperty('--bg-dom-g', dom_color.green().toString());
+					container.style.setProperty('--bg-dom-b', dom_color.blue().toString());
+					// complementary colo
+					container.style.setProperty('--bg-comp-r', comp_color.red().toString());
+					container.style.setProperty('--bg-comp-g', comp_color.green().toString());
+					container.style.setProperty('--bg-comp-b', comp_color.blue().toString());
+					// text
+					container.style.setProperty('--text-color', color.lightness(10).rgb().string());
 				}
+				loaded = true;
 			})
 			.catch((e) => {
 				console.log(e);
@@ -33,11 +63,16 @@
 	});
 </script>
 
-<div id="bg-image" style="--bg-image: url({bg})" />
-
-<div id="nf-container">
-	<slot />
-</div>
+{#if loaded}
+	<div id="bg-image" transition:fade={{ duration: 500 }} style="--bg-image: url({bg})" />
+	<div id="nf-container" transition:fade={{ duration: 500 }}>
+		<slot />
+	</div>
+{:else}
+	<div id="nf-container" transition:fade={{ duration: 500 }}>
+		<slot />
+	</div>
+{/if}
 
 <style>
 	#bg-image {
@@ -46,13 +81,13 @@
 	}
 
 	#bg-image::after {
-		@apply pointer-events-none absolute h-full w-full bg-opacity-80;
+		@apply pointer-events-none absolute h-full w-full bg-opacity-70;
 		content: '';
-		background: var(--bg-dom-color);
+		background: rgba(var(--bg-dom-r), var(--bg-dom-g), var(--bg-dom-b), var(--tw-bg-opacity));
 		box-shadow: inset 0 0 10rem black;
 	}
 
 	#nf-container {
-		@apply absolute top-0 left-0 h-screen w-screen bg-black bg-opacity-20;
+		@apply absolute top-0 left-0 h-screen w-screen bg-black bg-opacity-30;
 	}
 </style>

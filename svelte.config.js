@@ -10,7 +10,11 @@ const config = {
 	}),
 
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		alias: {
+			// this will match a file
+			$svg: 'src/svg'
+		}
 	}
 };
 

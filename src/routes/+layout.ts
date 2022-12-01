@@ -1,53 +1,61 @@
 /** @type {import('./$types').LayoutLoad} */
+import { dom_color, comp_color, acc_color, text_color } from '$lib/stores';
+import { FastAverageColor } from 'fast-average-color';
+import Color from 'color';
 
 const bgURL =
 	'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/uncentered/17/17027.jpg';
 
-import { FastAverageColor } from 'fast-average-color';
-import Color from 'color';
-
 const fac: FastAverageColor = new FastAverageColor();
 
-// TODO: should probably add a function to return the dominant color as an OBJ and rework this function to use it
-// ~ a color obj will be usefull to keep manipulating the colo without fetching again e.g. get new colors for the summoner suggestions
-// ! need to find a way to get accent color too, probably a second fetch with algorithm simple
+// TODO: currently stores Colors in projects stores but this seems inefficient needs more work
+// !!! need to find a way to get accent color too, probably a second fetch with algorithm simple
 export async function getStyleVars() {
 	return await fac
 		.getColorAsync(bgURL, { algorithm: 'dominant' })
 		.then((result) => {
 			const color: Color = new Color(result.rgb);
+			let dominant_c, complementary_c, text_c, accent_c;
+			let css_vars: string;
 
 			if (result.isDark) {
-				const dom_color = color.whiten(0.3);
-				const comp_color = color.lightness(50);
-				const text_color = color.lightness(90).rgb().string();
-				const acc_color = color.rotate(180).rgb().string();
+				dominant_c = color.whiten(0.3);
+				complementary_c = color.lightness(50);
+				text_c = color.lightness(90);
+				accent_c = color.rotate(180);
 
-				return `--bg-image: url(${bgURL});
-						--bg-dom-r: ${dom_color.red().toString()};
-						--bg-dom-g: ${dom_color.green().toString()};
-						--bg-dom-b: ${dom_color.blue().toString()};
-						--bg-comp-r: ${comp_color.red().toString()};
-						--bg-comp-g: ${comp_color.green().toString()};
-						--bg-comp-b: ${comp_color.blue().toString()};
-						--text-color: ${text_color};
-						--acc-color: ${acc_color};`;
+				css_vars = `--bg-image: url(${bgURL});
+							--bg-dom-r: ${dominant_c.red().toString()};
+							--bg-dom-g: ${dominant_c.green().toString()};
+							--bg-dom-b: ${dominant_c.blue().toString()};
+							--bg-comp-r: ${complementary_c.red().toString()};
+							--bg-comp-g: ${complementary_c.green().toString()};
+							--bg-comp-b: ${complementary_c.blue().toString()};
+							--text-color: ${text_c.rgb().string()};
+							--acc-color: ${accent_c.rgb().string()};`;
 			} else {
-				const dom_color = color.darken(0.3);
-				const comp_color = color.lightness(50);
-				const text_color = color.lightness(10).rgb().string();
-				const acc_color = color.rotate(180).rgb().string();
+				dominant_c = color.darken(0.3);
+				complementary_c = color.lightness(50);
+				text_c = color.lightness(10);
+				accent_c = color.rotate(180);
 
-				return `--bg-image: url(${bgURL});
-						--bg-dom-r: ${dom_color.red().toString()};
-						--bg-dom-g: ${dom_color.green().toString()};
-						--bg-dom-b: ${dom_color.blue().toString()};
-						--bg-comp-r: ${comp_color.red().toString()};
-						--bg-comp-g: ${comp_color.green().toString()};
-						--bg-comp-b: ${comp_color.blue().toString()};
-						--text-color: ${text_color};
-						--acc-color: ${acc_color};`;
+				css_vars = `--bg-image: url(${bgURL});
+							--bg-dom-r: ${dominant_c.red().toString()};
+							--bg-dom-g: ${dominant_c.green().toString()};
+							--bg-dom-b: ${dominant_c.blue().toString()};
+							--bg-comp-r: ${complementary_c.red().toString()};
+							--bg-comp-g: ${complementary_c.green().toString()};
+							--bg-comp-b: ${complementary_c.blue().toString()};
+							--text-color: ${text_c.rgb().string()};
+							--acc-color: ${accent_c.rgb().string()};`;
 			}
+			
+			dom_color.set(dominant_c);
+			comp_color.set(complementary_c);
+			acc_color.set(accent_c);
+			text_color.set(text_c);
+
+			return css_vars;
 		})
 		.catch((e) => {
 			console.log(e);

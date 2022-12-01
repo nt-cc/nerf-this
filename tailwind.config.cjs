@@ -1,6 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
+
 	theme: {
 		extend: {
 			fontFamily: {
@@ -8,5 +8,8 @@ module.exports = {
 			}
 		}
 	},
+
 	plugins: []
 };
+
+module.exports = config;

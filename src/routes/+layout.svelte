@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.css';
+	import '/src/app.postcss';
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { getStyleVars } from './+layout';

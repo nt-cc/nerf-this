@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.bg-dom {
+		color: var(--text-color);
+		background: rgba(var(--bg-comp-r), var(--bg-comp-g), var(--bg-comp-b), var(--tw-bg-opacity));
+	}
+
+	.bg-acc {
+		background: var(--acc-color);
+	}
+
+	.text-dom-content {
+		color: var(--text-color);
+	}
+
+	.card {
+		@apply flex gap-5 rounded-xl p-5 text-xl font-medium backdrop-blur;
+	}
+
+	.button {
+		@apply whitespace-nowrap rounded-lg bg-opacity-100 p-2 py-1 text-sm uppercase;
+	}
+}
+
+html,
+body {
+	@apply font-Inter;
+}

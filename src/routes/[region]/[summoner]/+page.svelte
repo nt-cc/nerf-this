@@ -6,11 +6,14 @@
 	};
 </script>
 
-<h1 id="region">{data.region}</h1>
-<h1>{data.summoner}</h1>
+<main>
+	<h1>{data.summoner}</h1>
+	<h2>{data.region}</h2>
+</main>
 
 <style>
-	#region {
-		@apply text-2xl;
+	main {
+		@apply card flex h-screen w-screen flex-col items-center justify-center text-4xl;
+		color: var(--text-color);
 	}
 </style>

@@ -5,5 +5,10 @@
 	"printWidth": 120,
 	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
 	"pluginSearchDirs": false,
+	"singleAttributePerLine": false,
+	"bracketSameLine": true,
+	"bracketSpacing": true,
+	"svelteAllowShorthand": true,
+	"svelteIndentScriptAndStyle": true,
 	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
 }

@@ -6,14 +6,7 @@
 	};
 </script>
 
-<main>
+<main class="text-dom-content flex h-screen w-screen flex-col items-center justify-center text-4xl">
 	<h1>{data.summoner}</h1>
 	<h2>{data.region}</h2>
 </main>
-
-<style>
-	main {
-		@apply card flex h-screen w-screen flex-col items-center justify-center text-4xl;
-		color: var(--text-color);
-	}
-</style>

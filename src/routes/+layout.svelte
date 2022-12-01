@@ -17,12 +17,21 @@
 
 <div id="wrapper" style={css_vars}>
 	{#if loaded}
-		<div id="bg-image" in:fade={{ duration: 500, delay: 50 }} />
-		<div id="nf-container" in:fade={{ duration: 500, delay: 50 }}>
+		<div
+			id="bg-image"
+			class=" after:bg-dom h-screen w-screen bg-cover bg-center bg-no-repeat after:pointer-events-none after:absolute after:h-full after:w-full after:bg-opacity-70"
+			in:fade={{ duration: 500, delay: 50 }} />
+		<div
+			id="nf-container"
+			class="absolute top-0 left-0 h-screen w-screen bg-black bg-opacity-30"
+			in:fade={{ duration: 500, delay: 50 }}>
 			<slot />
 		</div>
 	{:else}
-		<div id="nf-container-loading" out:fade={{ duration: 200 }}>
+		<div
+			id="nf-container-loading"
+			class="absolute top-0 left-0 h-screen w-screen bg-black bg-opacity-30"
+			out:fade={{ duration: 200 }}>
 			<slot />
 		</div>
 	{/if}
@@ -30,21 +39,11 @@
 
 <style>
 	#bg-image {
-		@apply h-screen w-screen bg-cover bg-center bg-no-repeat;
 		background-image: var(--bg-image);
 	}
 
 	#bg-image::after {
-		@apply pointer-events-none absolute h-full w-full bg-opacity-70;
 		content: '';
-		background: rgba(var(--bg-dom-r), var(--bg-dom-g), var(--bg-dom-b), var(--tw-bg-opacity));
-		box-shadow: inset 0 0 10rem black;
-	}
-
-	#nf-container {
-		@apply absolute top-0 left-0 h-screen w-screen bg-black bg-opacity-30;
-	}
-	#nf-container-loading {
-		@apply absolute top-0 left-0 h-screen w-screen bg-black bg-opacity-30;
+		box-shadow: inset 0 0 16rem black;
 	}
 </style>

@@ -6,36 +6,42 @@
 	const css_vars = `--regions-padding: 0.75rem`;
 
 	let summoner: string;
-	let searchFocused = false;
+	let recentsOpen = false;
 
 	const regions = ['na', 'euw', 'lan'];
 	let region: string = regions[0];
 	let regionsOpen = false;
 
-	function openRecents() {
-		searchFocused = true;
-	}
-
-	function closeRecents() {
-		if (document.getElementById('summoner-recent') !== document.activeElement) {
-			searchFocused = false;
+	function toggleRecents() {
+		if (document.getElementById('summoner-form')?.contains(document.activeElement)) {
+			// INFO if form is focused
+			if (document.getElementById('regions-btn') === document.activeElement) {
+				// <> and if the focus is on the regions button dont open
+				recentsOpen = false;
+			} else {
+				// <> otherwise open
+				recentsOpen = true;
+			}
+		} else {
+			// <> focus is outside form so dont open
+			recentsOpen = false;
 		}
 	}
+
 	function toggleRegion() {
 		regionsOpen = !regionsOpen;
 	}
 </script>
 
 <!-- TODO: this still needs some work to make things simpler -->
-
 <form
 	id="summoner-form"
 	class="row-start-2 flex h-full w-full max-w-lg flex-col items-center gap-5 self-start justify-self-center"
 	action={`${region}/${summoner}/`}
 	autocomplete="off"
 	style={css_vars}
-	on:focusin={openRecents}
-	on:focusout={closeRecents}>
+	on:focusin={toggleRecents}
+	on:focusout={toggleRecents}>
 	<div id="summoner-srch-wrap" class="bg-comp card z-10 h-min w-full min-w-max max-w-lg shadow-lg">
 		<input
 			id="summoner-inpt"
@@ -43,7 +49,6 @@
 			type="text"
 			placeholder="Search for Summoner..."
 			bind:value={summoner} />
-
 		<button
 			id="regions-btn"
 			class="focus-within:outline-none; relative w-14 max-w-[3.5rem] text-right uppercase"
@@ -77,7 +82,7 @@
 		</button>
 	</div>
 
-	{#if searchFocused}
+	{#if recentsOpen}
 		<div
 			id="recent-smmnrs"
 			class="card bg-comp h-min w-full max-w-lg shadow"
@@ -93,7 +98,6 @@
 						class="button bg-comp opacity-100"
 						on:click={() => {
 							//TODO: add region next to summoner
-							closeRecents();
 							summoner = user;
 						}}>
 						{user}

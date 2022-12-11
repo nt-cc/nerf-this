@@ -10,5 +10,6 @@
 	"bracketSpacing": true,
 	"svelteAllowShorthand": true,
 	"svelteIndentScriptAndStyle": true,
+	"tabWidth": 4,
 	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
 }

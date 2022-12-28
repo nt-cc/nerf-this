@@ -9,19 +9,19 @@
 			"type": "node-terminal",
 			"request": "launch",
 			"command": "yarn dev"
-		},
-		{
-			"type": "msedge",
-			"name": "Launch Microsoft Edge in headless mode",
-			"request": "launch",
-			"url": "http://localhost:5173/", // Provide your project's url to finish configuring
-			"webRoot": "${workspaceFolder}"
 		}
-	],
-	"compounds": [
-		{
-			"name": "Launch NF and Edge w/ DevTools",
-			"configurations": ["Launch svelte", "Launch Microsoft Edge in headless mode"]
-		}
+		// {
+		// 	"type": "msedge",
+		// 	"name": "Launch Microsoft Edge in headless mode",
+		// 	"request": "launch",
+		// 	"url": "http://localhost:5173/", // Provide your project's url to finish configuring
+		// 	"webRoot": "${workspaceFolder}"
+		// }
 	]
+	// "compounds": [
+	// 	{
+	// 		"name": "Launch NF and Edge w/ DevTools",
+	// 		"configurations": ["Launch svelte", "Launch Microsoft Edge in headless mode"]
+	// 	}
+	// ]
 }

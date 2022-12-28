@@ -63,6 +63,7 @@ export async function getStyleVars() {
 }
 
 export function load() {
+	//FIXME: this does nothing its an example delete when finished
 	return {
 		test: 'test'
 	};
